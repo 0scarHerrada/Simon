@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./styles.css">
+        <title>Simon</title>
+    </head>
+    <body>
+        <body>
+            <section id="simon-game">
+                <div id="top-left" class="button-container">
+                    <button id="green" class="button"></button>
+                    <button id="flat-green" class="flat-button" onclick="controller.smallGreen()"></button>
+                </div>
+                <div id="top-right" class="button-container">
+                    <button id="red" class="button"></button>
+                    <button id="flat-red" class="flat-button" onclick="controller.smallRed()"></button>
+                </div>
+                <div id="gamecenter">
+                    <div id="name-logo-container">
+                        <div id="logo-container">
+                            <img id="logo" src="./assets/MB_logo.png" alt="">
+                            <p id="logo-tm" class="tm">TM</p>
+                        </div>
+                        <div id="name-container">
+                            <div id="name-img-container">
+                                <img src="./assets/simon_name.png" alt="">
+                            </div>
+                            <p id="simon-tm" class="tm">TM</p>
+                        </div>
+                    </div>
+                    <div id="game-controls">
+                        <section id="game-switches">
+                            <div id="game-style-container">
+                                <p>GAME</p>
+                                <div id="short-values"class="switch-values">
+                                    <p class="switch-detail">1</p>
+                                    <p class="switch-detail">2</p>
+                                    <p class="switch-detail">3</p>
+                                </div>
+                            </div>
+                            <div id="skill-level-container">
+                                <p>SKILL LEVEL</p>
+                                <div id="long-values" class="switch-values skill-values">
+                                    <p class="switch-detail">1</p>
+                                    <p class="switch-detail">2</p>
+                                    <p class="switch-detail">3</p>
+                                    <p class="switch-detail">4</p>
+                                </div>
+                            </div>
+                            <div id="short-switch-container1" class="short-switch-container">
+                                <div id="short-switch" class="switch">
+                                    <div id="game-down" onclick="controller.gameTypeDown()"></div>
+                                    <div id="game-up" onclick="controller.gameTypeUp()"></div>
+                                </div>
+                            </div>
+                            <div id="long-switch-container1" class="long-switch-container">
+                                <div id="long-switch" class="switch">
+                                    <div onclick="controller.skillLevelDown()"></div>
+                                    <div onclick="controller.skillLevelUp()"></div>
+                                </div>
+                            </div>
+                        </section>
+                        <section id="game-buttons">
+                            <p class="button-detail">LAST</p>
+                            <p class="button-detail">START</p>
+                            <p class="button-detail">LONGEST</p>
+                            <button class="game-button yellow" onclick="controller.pushLast()"></button>
+                            <button class="game-button red" onclick="controller.pushStart()"></button>
+                            <button class="game-button yellow" onclick="controller.pushLongest()"></button>
+                        </section>
+                        <div id="on-off">
+                            <p class="switch-detail">OFF</p>
+                            <div id="off" class="switch toggle-power">
+                                <div onclick="controller.powerOff()"></div>
+                                <div onclick="controller.powerOn()"></div>
+                            </div>
+                            <p class="switch-detail">ON</p>
+                        </div>
+                    </div> 
+                </div>
+                <div id="bottom-left">
+                    <button id="yellow" class="button"></button>
+                    <button id="flat-yellow" class="flat-button" onclick="controller.smallYellow()"></button>
+                </div>
+                <div id="bottom-right">
+                    <button id="blue" class="button"></button>
+                    <button id="flat-blue" class="flat-button" onclick="controller.smallBlue()"></button>
+                </div>
+            </section>
+        </body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="./index.js"></script>
+    </body>
+</html>
