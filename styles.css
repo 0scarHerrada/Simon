@@ -66,9 +66,9 @@ body{
 }
 
 .active-button {
-    height: 100%;
-    width: 100%;
-    border: 2px solid #555;
+    height: 99%;
+    width: 99%;
+    border: 6px solid #333;
     background-image: url(./assets/lit_grain_nobg.png);
     background-position: center;
 }
@@ -93,6 +93,26 @@ body{
 }
 
 #blue {
+    border-radius: 95% 4% 150% 4%;
+    background-color: #0285c1;
+}
+
+#green-off {
+    border-radius: 150% 4% 95% 4%;
+    background-color: #00b374;
+}
+
+#red-off {
+    border-radius: 4% 150% 4% 95%;
+    background-color: #df4847;
+}
+
+#yellow-off {
+    border-radius: 4% 95% 4% 150%;
+    background-color: #d1ba25;
+}
+
+#blue-off {
     border-radius: 95% 4% 150% 4%;
     background-color: #0285c1;
 }

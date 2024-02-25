@@ -1,28 +1,28 @@
 // Controller
 const controller = {
     pushGreen: function() {
-
+        model.buttonPress("green");
     },
     smallGreen: function() {
         this.pushGreen();
         view.displaySmallPush("green");
     },
     pushRed: function() {
-
+        model.buttonPress("red");
     },
     smallRed: function() {
         this.pushRed();
         view.displaySmallPush("red");
     },
     pushYellow: function() {
-
+        model.buttonPress("yellow");
     },
     smallYellow: function() {
         this.pushYellow();
         view.displaySmallPush("yellow");  
     },
     pushBlue: function() {
-
+        model.buttonPress("blue");
     },
     smallBlue: function() {
         this.pushBlue();
@@ -62,10 +62,12 @@ const controller = {
     powerOff: function() {
         model.setPowerStatus("Off");
         view.shiftPower("Off");
+        view.poweringOff();
     },
     powerOn: function() {
         model.setPowerStatus("On");
         view.shiftPower("On");
+        view.poweringOn();
     }
 }
 
@@ -135,39 +137,42 @@ const view = {
             $(".toggle-power").attr("id", "on");
         }
     },
-    lightUpSequence: function(sequence) {
-        for (let i = 0; i < sequence.length; i++) {
-                console.log(sequence[i])
-                if (sequence[i] === 1) {
-                    setTimeout(() => {}, 1000)
+    lightUpButton: function(button) {
+            setTimeout(() => {
+                if (button === 1) {
                     $("#green").removeClass("button").addClass("active-button");
                     setTimeout(() => {
-                        $("#green").removeClass("active-button");
-                    }, 300)
-                    $("#green").addClass("button");
-                } else if (sequence[i] === 2) {
-                    setTimeout(() => {}, 1000)
+                        $("#green").removeClass("active-button").addClass("button");
+                    }, 500)
+                } else if (button === 2) {
                     $("#red").removeClass("button").addClass("active-button");
                     setTimeout(() => {
-                        $("#red").removeClass("active-button");
-                    }, 300)
-                    $("#red").addClass("button");
-                } else if (sequence[i] === 3) {
-                    setTimeout(() => {}, 1000)
+                        $("#red").removeClass("active-button").addClass("button");
+                    }, 500)
+                } else if (button === 3) {
                     $("#yellow").removeClass("button").addClass("active-button");
                     setTimeout(() => {
-                        $("#yellow").removeClass("active-button");
-                    }, 300)
-                    $("#yellow").addClass("button");
-                } else if (sequence[i] === 4) {
-                    setTimeout(() => {}, 1000)
+                        $("#yellow").removeClass("active-button").addClass("button");
+                    }, 500)
+                } else if (button === 4) {
                     $("#blue").removeClass("button").addClass("active-button");
                     setTimeout(() => {
-                        $("#blue").removeClass("active-button");
-                    }, 300)
-                    $("#blue").addClass("button");
+                        $("#blue").removeClass("active-button").addClass("button");
+                    }, 500)
                 }
-        }
+            }, 500)
+    },
+    poweringOff: function() {
+        $("#green").attr("id", "green-off");
+        $("#red").attr("id", "red-off");
+        $("#yellow").attr("id", "yellow-off");
+        $("#blue").attr("id", "blue-off");
+    },
+    poweringOn: function() {
+        $("#green-off").attr("id", "green");
+        $("#red-off").attr("id", "red");
+        $("#yellow-off").attr("id", "yellow");
+        $("#blue-off").attr("id", "blue");
     }
 }
 
@@ -178,7 +183,10 @@ const audio = {
     },
     longestScore: function(longestScore) {
         console.log(longestScore)
-    }
+    },
+    playButtonSound: function() {
+        console.log("playing button sound..")
+    },
 }
 
 // Model
@@ -210,9 +218,9 @@ const model = {
         if (this.powerStatus === "On" && !this.activeGame) {
             this.activeGame = true;
             this.onAndIdle = false;
-            game.buildGame(this.gameType, this.skillLevel);
             console.log("Starting Simon")
             console.log(this.activeGame)
+            game.buildGame(this.gameType, this.skillLevel);
         }
     },
     longestScore: 50,
@@ -235,13 +243,76 @@ const model = {
             this.onAndIdle = true;
         }
     },
-    playCPUGame: function(simonsArray, skillLevel) {
-        console.log(simonsArray)
-        view.lightUpSequence(simonsArray);
-
+    playSoloGame: function(simonsArray, skillLevel) {
+        this.fullSequence = simonsArray;
+        this.currentSequence = simonsArray.slice(0, this.sequenceIndex);
+        this.playSequence(skillLevel);
     },
     playPVPGame: function(playerOneArray, playerTwoArray, adjustment, skillLevel) {
 
+    },
+    playTeamGame: function(simonsArray, skillLevel) {
+
+    },
+    fullSequence: [],
+    currentSequence: [],
+    playerSequence: [],
+    sequenceIndex: 1,
+    playSequence: function(skillLevel) {
+        // for (let i = 0; i < this.fullSequence.length; i++) {
+        //     setTimeout(() => {
+        //         if (document.getElementById("green-off")) {
+        //             i = this.fullSequence.length + 1;
+        //         }
+        //         view.lightUpButton(this.fullSequence[i]);
+        //         audio.playButtonSound(this.fullSequence[i]);
+        //         if (i === (this.fullSequence.length - 1)) {
+        //             setTimeout(() => {
+        //                 this.toggleButtons();
+        //                 this.awaitingPlayer(skillLevel);
+        //             }, 1000);
+        //         }
+        //      }, i * 1000);
+        // }
+    },
+    stopSequence: function(timeoutId) {
+        console.log("Here")
+        clearTimeout(timeoutId);
+    },
+    buttonsActive: false,
+    toggleButtons: function() {
+        if (this.buttonsActive) {
+            this.buttonsActive = false;
+        } else {
+            this.buttonsActive = true;
+        }
+    },
+    buttonMap: {"green": 1, "red": 2, "yellow": 3, "blue": 4},
+    buttonPresses: 0,
+    buttonPress: function(color) {
+        if (this.buttonsActive) {
+            if (buttonMap[color] ) {
+                
+            } else {
+                
+            }
+        } 
+    },
+    awaitingPlayer: function(skillLevel) {
+        console.log(skillLevel);
+        console.log("Awaiting Player");
+    },
+    gameScore: 0,
+    endGame: function() {
+        this.lastScore = this.gameScore;
+        if (this.gameScore > this.longestScore) {
+            this.longestScore = this.gameScore;
+        }
+        this.gameScore = 0;
+        this.awaitingPlayer = false;
+        this.currentSequence = [];
+        this.toggleButtons();
+        this.activeGame = false;
     }
 }
 
@@ -262,7 +333,7 @@ const game = {
             simonsArray.push(Math.floor(Math.random() * 4) + 1);
         }
         let adjustment = (skillLevel * 0.25) * 100;
-        model.playCPUGame(simonsArray.slice(0, adjustment), skillLevel);
+        model.playSoloGame(simonsArray.slice(0, adjustment), skillLevel);
     },
     pvpGame: function(skillLevel) {
         let playerOneArray = [];
@@ -276,6 +347,6 @@ const game = {
             simonsArray.push(Math.floor(Math.random() * 4) + 1);
         }
         let adjustment = (skillLevel * 0.25) * 100;
-        model.playCPUGame(simonsArray.slice(0, adjustment), skillLevel);
+        model.playTeamGame(simonsArray.slice(0, adjustment), skillLevel);
     }
 }
