@@ -60,14 +60,13 @@ const controller = {
         }
     },
     powerOff: function() {
-        model.setPowerStatus("Off");
-        view.shiftPower("Off");
-        view.poweringOff();
+        audio.poweringOff();
+        location.reload();
     },
     powerOn: function() {
         model.setPowerStatus("On");
         view.shiftPower("On");
-        view.poweringOn();
+        audio.poweringOn();
     }
 }
 
@@ -137,54 +136,102 @@ const view = {
             $(".toggle-power").attr("id", "on");
         }
     },
-    lightUpButton: function(button) {
+    lightUpButton: function(button, skillLevel) {
+            let adjustment = (skillLevel * 100) - 100;
+            let delay = 500 - adjustment;
             setTimeout(() => {
                 if (button === 1) {
                     $("#green").removeClass("button").addClass("active-button");
                     setTimeout(() => {
                         $("#green").removeClass("active-button").addClass("button");
-                    }, 500)
+                    }, delay)
                 } else if (button === 2) {
                     $("#red").removeClass("button").addClass("active-button");
                     setTimeout(() => {
                         $("#red").removeClass("active-button").addClass("button");
-                    }, 500)
+                    }, delay)
                 } else if (button === 3) {
                     $("#yellow").removeClass("button").addClass("active-button");
                     setTimeout(() => {
                         $("#yellow").removeClass("active-button").addClass("button");
-                    }, 500)
+                    }, delay)
                 } else if (button === 4) {
                     $("#blue").removeClass("button").addClass("active-button");
                     setTimeout(() => {
                         $("#blue").removeClass("active-button").addClass("button");
-                    }, 500)
+                    }, delay)
                 }
             }, 500)
-    },
-    poweringOff: function() {
-        $("#green").attr("id", "green-off");
-        $("#red").attr("id", "red-off");
-        $("#yellow").attr("id", "yellow-off");
-        $("#blue").attr("id", "blue-off");
-    },
-    poweringOn: function() {
-        $("#green-off").attr("id", "green");
-        $("#red-off").attr("id", "red");
-        $("#yellow-off").attr("id", "yellow");
-        $("#blue-off").attr("id", "blue");
     }
 }
 
 // Audio
 const audio = {
+    poweringOn: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = "Power On";
+        speechSynthesis.speak(msg);
+    },
+    poweringOff: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = "Power Off";
+        speechSynthesis.speak(msg);
+    },
     lastScore: function(lastScore) {
-        console.log(lastScore)
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = "Last Score " + lastScore;
+        speechSynthesis.speak(msg);
+    },
+    startingGame: function(startingMessage) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = startingMessage;
+        speechSynthesis.speak(msg);
     },
     longestScore: function(longestScore) {
-        console.log(longestScore)
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = "Longest Score " + longestScore;
+        speechSynthesis.speak(msg);
     },
-    playButtonSound: function() {
+    finalScore: function(finalScore) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = "Final Score " + finalScore;
+        speechSynthesis.speak(msg);
+    },
+    tryAgain: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = "Simon wins";
+        speechSynthesis.speak(msg);
+    },
+    congratulate: function(gameLevel, skillLevel) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 0.85;
+        msg.pitch = 0;
+        msg.text = `Congratulations for beating Simon on game level ${gameLevel} and skill level ${skillLevel}`;
+        speechSynthesis.speak(msg);
+    },
+    playButtonSound: function(button, skillLevel) {
         console.log("playing button sound..")
     },
 }
@@ -218,8 +265,13 @@ const model = {
         if (this.powerStatus === "On" && !this.activeGame) {
             this.activeGame = true;
             this.onAndIdle = false;
-            console.log("Starting Simon")
-            console.log(this.activeGame)
+            if (this.gameType === 1) {
+                audio.startingGame("Solo vs. Simon");
+            } else if (this.gameType === 2) {
+                audio.startingGame("Player 1 vs. Player 2");
+            } else {
+                audio.startingGame("Team vs. Simon");
+            }
             game.buildGame(this.gameType, this.skillLevel);
         }
     },
@@ -245,7 +297,7 @@ const model = {
     },
     playSoloGame: function(simonsArray, skillLevel) {
         this.fullSequence = simonsArray;
-        this.currentSequence = simonsArray.slice(0, this.sequenceIndex);
+        this.currentSequence = simonsArray.slice(0, 1);
         this.playSequence(skillLevel);
     },
     playPVPGame: function(playerOneArray, playerTwoArray, adjustment, skillLevel) {
@@ -256,28 +308,37 @@ const model = {
     },
     fullSequence: [],
     currentSequence: [],
-    playerSequence: [],
-    sequenceIndex: 1,
+    passThrough: 0,
     playSequence: function(skillLevel) {
-        // for (let i = 0; i < this.fullSequence.length; i++) {
-        //     setTimeout(() => {
-        //         if (document.getElementById("green-off")) {
-        //             i = this.fullSequence.length + 1;
-        //         }
-        //         view.lightUpButton(this.fullSequence[i]);
-        //         audio.playButtonSound(this.fullSequence[i]);
-        //         if (i === (this.fullSequence.length - 1)) {
-        //             setTimeout(() => {
-        //                 this.toggleButtons();
-        //                 this.awaitingPlayer(skillLevel);
-        //             }, 1000);
-        //         }
-        //      }, i * 1000);
-        // }
-    },
-    stopSequence: function(timeoutId) {
-        console.log("Here")
-        clearTimeout(timeoutId);
+        if (this.passThrough === 0) {
+            this.passThrough = this.passThrough + 1;
+            setTimeout(() => {
+                for (let i = 0; i < this.currentSequence.length; i++) {
+                    setTimeout(() => {
+                        view.lightUpButton(this.currentSequence[i], skillLevel);
+                        audio.playButtonSound(this.currentSequence[i], skillLevel);
+                        if (i === (this.currentSequence.length - 1)) {
+                            setTimeout(() => {
+                                this.toggleButtons();
+                            }, 1000);
+                        }
+                     }, i * 1000);
+                }
+            }, 3500)
+        } else {
+            for (let i = 0; i < this.currentSequence.length; i++) {
+                setTimeout(() => {
+                    view.lightUpButton(this.currentSequence[i], skillLevel);
+                    audio.playButtonSound(this.currentSequence[i], skillLevel);
+                    if (i === (this.currentSequence.length - 1)) {
+                        setTimeout(() => {
+                            this.toggleButtons();
+                        }, 1000);
+                    }
+                 }, i * 1000);
+            }
+        }
+        
     },
     buttonsActive: false,
     toggleButtons: function() {
@@ -291,28 +352,39 @@ const model = {
     buttonPresses: 0,
     buttonPress: function(color) {
         if (this.buttonsActive) {
-            if (buttonMap[color] ) {
-                
+            if (this.buttonMap[color] === this.currentSequence[this.buttonPresses]) {
+                    this.buttonPresses = this.buttonPresses + 1;
             } else {
-                
+                audio.tryAgain();
+                this.endGame();
+            }
+            if (this.buttonPresses === this.fullSequence.length) {
+                view.congratulate();
+                audio.congratulate();
+                this.endGame();
+            }
+            if (this.buttonPresses === this.currentSequence.length) {
+                this.buttonPresses = 0;
+                this.currentSequence = this.fullSequence.slice(0, (this.currentSequence.length + 1));
+                this.toggleButtons();
+                this.playSequence(this.skillLevel);
             }
         } 
     },
-    awaitingPlayer: function(skillLevel) {
-        console.log(skillLevel);
-        console.log("Awaiting Player");
-    },
     gameScore: 0,
     endGame: function() {
-        this.lastScore = this.gameScore;
-        if (this.gameScore > this.longestScore) {
-            this.longestScore = this.gameScore;
+        let finalScore = this.currentSequence.length - 1;
+        audio.finalScore(finalScore);
+        this.lastScore = finalScore;
+        if (finalScore > this.longestScore) {
+            this.longestScore = finalScore;
         }
-        this.gameScore = 0;
-        this.awaitingPlayer = false;
+        this.passThrough = 0;
         this.currentSequence = [];
         this.toggleButtons();
-        this.activeGame = false;
+        setTimeout(() => {
+            this.activeGame = false;
+        }, 4500)
     }
 }
 
