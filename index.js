@@ -47,7 +47,11 @@ const controller = {
     pushLast: function() {
         model.scoreCheckAvailable();
         if (model.onAndIdle) {
-            audio.lastScore(model.lastScore);
+            if (model.currentLastScore) {
+                audio.lastScore(model.currentLastScore);
+            } else {
+                audio.lastScore(model.lastScore);
+            }
         }
     },
     pushStart: function() {
@@ -56,7 +60,11 @@ const controller = {
     pushLongest: function() {
         model.scoreCheckAvailable();
         if (model.onAndIdle) {
-            audio.longestScore(model.longestScore);
+            if (model.currentLongestScore) {
+                audio.longestScore(model.currentLongestScore);
+            } else {
+                audio.longestScore(model.longestScore);
+            }
         }
     },
     powerOff: function() {
@@ -170,7 +178,7 @@ const audio = {
     poweringOn: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Power On";
         speechSynthesis.speak(msg);
@@ -178,7 +186,7 @@ const audio = {
     poweringOff: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Power Off";
         speechSynthesis.speak(msg);
@@ -186,7 +194,7 @@ const audio = {
     lastScore: function(lastScore) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Last Score " + lastScore;
         speechSynthesis.speak(msg);
@@ -194,7 +202,7 @@ const audio = {
     startingGame: function(startingMessage) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = startingMessage;
         speechSynthesis.speak(msg);
@@ -202,7 +210,7 @@ const audio = {
     longestScore: function(longestScore) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Longest Score " + longestScore;
         speechSynthesis.speak(msg);
@@ -210,7 +218,7 @@ const audio = {
     finalScore: function(finalScore) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Final Score " + finalScore;
         speechSynthesis.speak(msg);
@@ -218,7 +226,7 @@ const audio = {
     tryAgain: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Simon wins";
         speechSynthesis.speak(msg);
@@ -226,7 +234,7 @@ const audio = {
     congratulate: function(gameLevel, skillLevel) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 0.85;
+        msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = `Congratulations for beating Simon on game level ${gameLevel} and skill level ${skillLevel}`;
         speechSynthesis.speak(msg);
@@ -256,10 +264,8 @@ const model = {
         }
         console.log(this.skillLevel)
     },
-    lastScore: 25,
-    setLastScore: function() {
-
-    },
+    currentLastScore: 0,
+    lastScore: this.currentLastScore ? this.currentLastScore : localStorage.getItem("lastScore") ? localStorage.getItem("lastScore") : 0,
     activeGame: false,
     startGame: function() {
         if (this.powerStatus === "On" && !this.activeGame) {
@@ -275,10 +281,8 @@ const model = {
             game.buildGame(this.gameType, this.skillLevel);
         }
     },
-    longestScore: 50,
-    setLongestScore: function() {
-
-    },
+    currentLongestScore: 0,
+    longestScore: this.currentLongestScore ? this.currentLongestScore : localStorage.getItem("longestScore") ? localStorage.getItem("longestScore") : 0,
     powerStatus: "Off",
     setPowerStatus: function(status) {
         if (status === "Off") {
@@ -324,7 +328,7 @@ const model = {
                         }
                      }, i * 1000);
                 }
-            }, 3500)
+            }, 2750)
         } else {
             for (let i = 0; i < this.currentSequence.length; i++) {
                 setTimeout(() => {
@@ -353,33 +357,39 @@ const model = {
     buttonPress: function(color) {
         if (this.buttonsActive) {
             if (this.buttonMap[color] === this.currentSequence[this.buttonPresses]) {
-                    this.buttonPresses = this.buttonPresses + 1;
+                this.buttonPresses = this.buttonPresses + 1;
             } else {
                 audio.tryAgain();
                 this.endGame();
-            }
+                return;
+            } 
+            
             if (this.buttonPresses === this.fullSequence.length) {
                 view.congratulate();
                 audio.congratulate();
                 this.endGame();
             }
+            
             if (this.buttonPresses === this.currentSequence.length) {
                 this.buttonPresses = 0;
                 this.currentSequence = this.fullSequence.slice(0, (this.currentSequence.length + 1));
                 this.toggleButtons();
                 this.playSequence(this.skillLevel);
-            }
+            } 
         } 
     },
     gameScore: 0,
     endGame: function() {
         let finalScore = this.currentSequence.length - 1;
         audio.finalScore(finalScore);
-        this.lastScore = finalScore;
+        this.currentLastScore = finalScore;
+        localStorage.setItem("lastScore", `${finalScore}`); 
         if (finalScore > this.longestScore) {
-            this.longestScore = finalScore;
+            this.currentLongestScore = finalScore;
+            localStorage.setItem("longestScore", `${finalScore}`); 
         }
-        this.passThrough = 0;
+        this.buttonPresses = 0;
+        this.passThrough = this.passThrough - 1;
         this.currentSequence = [];
         this.toggleButtons();
         setTimeout(() => {
