@@ -269,7 +269,6 @@ const model = {
     activeGame: false,
     startGame: function() {
         if (this.powerStatus === "On" && !this.activeGame) {
-            this.activeGame = true;
             this.onAndIdle = false;
             if (this.gameType === 1) {
                 audio.startingGame("Solo vs. Simon");
@@ -315,7 +314,14 @@ const model = {
     passThrough: 0,
     playSequence: function(skillLevel) {
         if (this.passThrough === 0) {
-            this.passThrough = this.passThrough + 1;
+            this.passThrough = this.passThrough - 1;
+            setTimeout(() => {
+                if (this.passThrough === -1) {
+                    audio.tryAgain();
+                    this.endGame();
+                    return;
+                }
+            }, 9500);
             setTimeout(() => {
                 for (let i = 0; i < this.currentSequence.length; i++) {
                     setTimeout(() => {
@@ -324,12 +330,23 @@ const model = {
                         if (i === (this.currentSequence.length - 1)) {
                             setTimeout(() => {
                                 this.toggleButtons();
+                                this.activeGame = true;
                             }, 1000);
                         }
                      }, i * 1000);
                 }
             }, 2750)
         } else {
+            this.passThrough = this.passThrough + 2;
+            let tempPT = this.passThrough;
+            console.log((this.currentSequence.length * (3000 - (skillLevel * 500))) + 7000)
+            setTimeout(() => {
+                if (this.passThrough === tempPT) {
+                    audio.tryAgain();
+                    this.endGame();
+                    return;
+                }
+            }, (this.currentSequence.length * (3000 - (skillLevel * 500))) + 7000);
             for (let i = 0; i < this.currentSequence.length; i++) {
                 setTimeout(() => {
                     view.lightUpButton(this.currentSequence[i], skillLevel);
@@ -337,9 +354,10 @@ const model = {
                     if (i === (this.currentSequence.length - 1)) {
                         setTimeout(() => {
                             this.toggleButtons();
+                            this.activeGame = true;
                         }, 1000);
                     }
-                 }, i * 1000);
+                 }, i * (1000 / skillLevel));
             }
         }
         
@@ -374,6 +392,7 @@ const model = {
                 this.buttonPresses = 0;
                 this.currentSequence = this.fullSequence.slice(0, (this.currentSequence.length + 1));
                 this.toggleButtons();
+                this.activeGame = false;
                 this.playSequence(this.skillLevel);
             } 
         } 
@@ -389,7 +408,7 @@ const model = {
             localStorage.setItem("longestScore", `${finalScore}`); 
         }
         this.buttonPresses = 0;
-        this.passThrough = this.passThrough - 1;
+        this.passThrough = 0;
         this.currentSequence = [];
         this.toggleButtons();
         setTimeout(() => {
