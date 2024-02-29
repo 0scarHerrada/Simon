@@ -16,6 +16,7 @@ const controller = {
     },
     pushYellow: function() {
         model.buttonPress("yellow");
+        view.pressYellow();
     },
     smallYellow: function() {
         this.pushYellow();
@@ -103,6 +104,12 @@ const view = {
             }, 100) 
         }
     },
+    pressYellow: function() {
+        $("#bottom-left").css("background-color", "#e0c828");
+        setTimeout(() => {
+            $("#bottom-left").css("background-color", "#d1ba25");
+        }, 100)
+    },
     shiftGameType: function(direction) {
         if (direction === "up") {
             if ($(".short-switch-container").attr("id") === "short-switch-container1") {
@@ -170,6 +177,20 @@ const view = {
                     }, delay)
                 }
             }, 500)
+    }, 
+    askPlayerCount: function() {
+        $("#red").removeClass("button").addClass("active-button");
+        setTimeout(() => {
+            $("#red").removeClass("active-button").addClass("button");
+        }, 500)
+        $("#yellow").removeClass("button").addClass("active-button");
+        setTimeout(() => {
+            $("#yellow").removeClass("active-button").addClass("button");
+        }, 500)
+        $("#blue").removeClass("button").addClass("active-button");
+        setTimeout(() => {
+            $("#blue").removeClass("active-button").addClass("button");
+        }, 500)   
     }
 }
 
@@ -212,7 +233,7 @@ const audio = {
         msg.volume = 1;
         msg.rate = 1.5;
         msg.pitch = 0;
-        msg.text = "Longest Score " + longestScore;
+        msg.text = "Longest score " + longestScore;
         speechSynthesis.speak(msg);
     },
     finalScore: function(finalScore) {
@@ -220,7 +241,15 @@ const audio = {
         msg.volume = 1;
         msg.rate = 1.5;
         msg.pitch = 0;
-        msg.text = "Final Score " + finalScore;
+        msg.text = "Final score " + finalScore;
+        speechSynthesis.speak(msg);
+    },
+    endingGame: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "Ending game";
         speechSynthesis.speak(msg);
     },
     tryAgain: function() {
@@ -229,6 +258,71 @@ const audio = {
         msg.rate = 1.5;
         msg.pitch = 0;
         msg.text = "Simon wins";
+        speechSynthesis.speak(msg);
+    },
+    youLose: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "You lose";
+        speechSynthesis.speak(msg);
+    },
+    askPlayerCount: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "Red for 2 players. Yellow for 3 players. Blue for 4 players.";
+        speechSynthesis.speak(msg);
+    },
+    youAreEliminated: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "You are eliminated";
+        speechSynthesis.speak(msg);
+        setTimeout(() => {
+            this.allPlayers();
+        }, 500);
+    },
+    allPlayers: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "All players who can";
+        speechSynthesis.speak(msg);
+        setTimeout(() => {
+            this.moveUp();
+        }, 500);
+    },
+    moveUp: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "Move up and take over your new player number and color";
+        speechSynthesis.speak(msg);
+        setTimeout(() => {
+            this.roundStarting();
+        }, 500);
+    },
+    roundStarting: function() {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = "Next round starting";
+        speechSynthesis.speak(msg);
+    },
+    annouceWinner: function(player) {
+        var msg = new SpeechSynthesisUtterance();
+        msg.volume = 1;
+        msg.rate = 1.5;
+        msg.pitch = 0;
+        msg.text = `PLayer ${player} has won team elimination`;
         speechSynthesis.speak(msg);
     },
     congratulate: function(gameLevel, skillLevel) {
@@ -272,12 +366,22 @@ const model = {
             this.onAndIdle = false;
             if (this.gameType === 1) {
                 audio.startingGame("Solo vs. Simon");
+                setTimeout(() => {
+                    game.buildSoloGame(this.skillLevel);
+                }, 2000);
             } else if (this.gameType === 2) {
                 audio.startingGame("Player 1 vs. Player 2");
             } else {
-                audio.startingGame("Team vs. Simon");
+                audio.startingGame("Team Elimination vs. Simon");
+                this.askPlayerCount();
+                setTimeout(() => {
+                    if (!this.playerCount) {
+                        this.waitingPlayerCount = false;
+                        audio.endingGame();
+                        return;
+                    }
+                }, 19000);
             }
-            game.buildGame(this.gameType, this.skillLevel);
         }
     },
     currentLongestScore: 0,
@@ -298,15 +402,12 @@ const model = {
             this.onAndIdle = true;
         }
     },
-    playSoloGame: function(simonsArray, skillLevel) {
+    playCPUGame: function(simonsArray, skillLevel) {
         this.fullSequence = simonsArray;
         this.currentSequence = simonsArray.slice(0, 1);
         this.playSequence(skillLevel);
     },
     playPVPGame: function(playerOneArray, playerTwoArray, adjustment, skillLevel) {
-
-    },
-    playTeamGame: function(simonsArray, skillLevel) {
 
     },
     fullSequence: [],
@@ -315,13 +416,15 @@ const model = {
     playSequence: function(skillLevel) {
         if (this.passThrough === 0) {
             this.passThrough = this.passThrough - 1;
-            setTimeout(() => {
-                if (this.passThrough === -1) {
-                    audio.tryAgain();
-                    this.endGame();
-                    return;
-                }
-            }, 9500);
+            if (this.gameType !== 2) {
+                setTimeout(() => {
+                    if (this.passThrough === -1) {
+                        audio.tryAgain();
+                        this.endGame();
+                        return;
+                    }
+                }, 9500);
+            }
             setTimeout(() => {
                 for (let i = 0; i < this.currentSequence.length; i++) {
                     setTimeout(() => {
@@ -335,18 +438,20 @@ const model = {
                         }
                      }, i * 1000);
                 }
-            }, 2750)
+            }, 2000)
         } else {
             this.passThrough = this.passThrough + 2;
             let tempPT = this.passThrough;
             console.log((this.currentSequence.length * (3000 - (skillLevel * 500))) + 7000)
-            setTimeout(() => {
-                if (this.passThrough === tempPT) {
-                    audio.tryAgain();
-                    this.endGame();
-                    return;
-                }
-            }, (this.currentSequence.length * (3000 - (skillLevel * 500))) + 7000);
+            if (this.gameType !== 2) {
+                setTimeout(() => {
+                    if (this.passThrough === tempPT) {
+                        audio.tryAgain();
+                        this.endGame();
+                        return;
+                    }
+                }, (this.currentSequence.length * (3000 - (skillLevel * 500))) + 7000);    
+            }
             for (let i = 0; i < this.currentSequence.length; i++) {
                 setTimeout(() => {
                     view.lightUpButton(this.currentSequence[i], skillLevel);
@@ -373,14 +478,26 @@ const model = {
     buttonMap: {"green": 1, "red": 2, "yellow": 3, "blue": 4},
     buttonPresses: 0,
     buttonPress: function(color) {
-        if (this.buttonsActive) {
+        if (this.waitingPlayerCount) {
+            if (this.buttonMap[color] > 1) {
+                this.playerCount = this.buttonMap[color];
+                this.waitingPlayerCount = false;
+                game.buildTeamGame(this.playerCount, this.skillLevel);
+            }
+        } else if (this.buttonsActive) {
             if (this.buttonMap[color] === this.currentSequence[this.buttonPresses]) {
                 this.buttonPresses = this.buttonPresses + 1;
-            } else {
+            } else if (this.gameType === 1) {
                 audio.tryAgain();
                 this.endGame();
                 return;
-            } 
+            } else if (this.gameType === 2) {
+                audio.youLose();
+                this.endGame();
+                return;
+            } else if (this.fullSequence.indexOf(this.buttonMap[color]) !== -1) {
+                this.eliminatePlayer(this.buttonMap[color]);
+            }
             
             if (this.buttonPresses === this.fullSequence.length) {
                 view.congratulate();
@@ -397,15 +514,49 @@ const model = {
             } 
         } 
     },
+    playerCount: 0,
+    askPlayerCount: function() {
+        audio.askPlayerCount();
+        setTimeout(() => {
+            this.waitingPlayerCount = true;
+            view.askPlayerCount();
+        }, 8500)
+    },
+    waitingPlayerCount: false,
+    eliminatePlayer: function(player) {
+        this.playerCount = this.playerCount - 1;
+        if (player === 2 && this.playerCount === 1) {
+            audio.annouceWinner(1);
+            this.passThrough = 0;
+            this.endGame();
+        } else if (player === 1 && this.playerCount === 1) {
+            audio.annouceWinner(2);
+            this.passThrough = 0;
+            this.endGame();
+        } else {
+            this.toggleButtons();
+            this.activeGame = false;
+            audio.youAreEliminated();
+            this.passThrough = 2;
+            setTimeout(() => {
+                game.buildTeamGame(this.playerCount, this.skillLevel);
+            }, 10000);
+        }
+    },
     gameScore: 0,
     endGame: function() {
         let finalScore = this.currentSequence.length - 1;
         audio.finalScore(finalScore);
-        this.currentLastScore = finalScore;
-        localStorage.setItem("lastScore", `${finalScore}`); 
-        if (finalScore > this.longestScore) {
-            this.currentLongestScore = finalScore;
-            localStorage.setItem("longestScore", `${finalScore}`); 
+        if (this.gameType === 1) {
+            this.currentLastScore = finalScore;
+            localStorage.setItem("lastScore", `${finalScore}`); 
+            if (finalScore > this.longestScore) {
+                this.currentLongestScore = finalScore;
+                localStorage.setItem("longestScore", `${finalScore}`); 
+            }   
+        }
+        if (this.playerCount) {
+            this.playerCount = 0;
         }
         this.buttonPresses = 0;
         this.passThrough = 0;
@@ -419,35 +570,26 @@ const model = {
 
 // Game
 const game = {
-    buildGame: function(gameType, skillLevel) {
-        if (gameType === 1) {
-            this.soloGame(skillLevel);
-        } else if (gameType === 2) {
-            this.pvpGame(skillLevel);
-        } else {
-            this.teamGame(skillLevel);
-        }
-    },
-    soloGame: function(skillLevel) {
+    buildSoloGame: function(skillLevel) {
         let simonsArray = [];
         for (let i = 1; i <= 100; i++) {
             simonsArray.push(Math.floor(Math.random() * 4) + 1);
         }
         let adjustment = (skillLevel * 0.25) * 100;
-        model.playSoloGame(simonsArray.slice(0, adjustment), skillLevel);
+        model.playCPUGame(simonsArray.slice(0, adjustment), skillLevel);
     },
-    pvpGame: function(skillLevel) {
+    buildPVPGame: function(skillLevel) {
         let playerOneArray = [];
         let playerTwoArray = [];
         let adjustment = (skillLevel * 0.25) * 100;
         model.playPVPGame(playerOneArray, playerTwoArray, adjustment, skillLevel);
     },
-    teamGame: function(skillLevel) {
+    buildTeamGame: function(playerCount, skillLevel) {
         let simonsArray = [];
         for (let i = 1; i <= 100; i++) {
-            simonsArray.push(Math.floor(Math.random() * 4) + 1);
+            simonsArray.push(Math.floor(Math.random() * playerCount) + 1);
         }
         let adjustment = (skillLevel * 0.25) * 100;
-        model.playTeamGame(simonsArray.slice(0, adjustment), skillLevel);
+        model.playCPUGame(simonsArray.slice(0, adjustment), skillLevel);
     }
 }
