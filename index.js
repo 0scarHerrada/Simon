@@ -231,7 +231,7 @@ const audio = {
     poweringOn: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Power On";
         speechSynthesis.speak(msg);
@@ -239,7 +239,7 @@ const audio = {
     poweringOff: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Power Off";
         speechSynthesis.speak(msg);
@@ -247,7 +247,7 @@ const audio = {
     lastScore: function(lastScore) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Last Score " + lastScore;
         speechSynthesis.speak(msg);
@@ -255,7 +255,7 @@ const audio = {
     startingGame: function(startingMessage) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = startingMessage;
         speechSynthesis.speak(msg);
@@ -263,7 +263,7 @@ const audio = {
     longestScore: function(longestScore) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Longest score " + longestScore;
         speechSynthesis.speak(msg);
@@ -271,7 +271,7 @@ const audio = {
     finalScore: function(finalScore) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Final score " + finalScore;
         speechSynthesis.speak(msg);
@@ -279,7 +279,7 @@ const audio = {
     endingGame: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Ending game";
         speechSynthesis.speak(msg);
@@ -287,7 +287,7 @@ const audio = {
     tryAgain: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Simon wins, Game Over";
         speechSynthesis.speak(msg);
@@ -295,7 +295,7 @@ const audio = {
     wrongMove: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Wrong move, Game Over";
         speechSynthesis.speak(msg);
@@ -303,7 +303,7 @@ const audio = {
     getPlayerArray: function(skillLevel) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = `Push ${skillLevel * 10} buttons to create your sequence`;
         speechSynthesis.speak(msg);
@@ -311,7 +311,7 @@ const audio = {
     createPlayStart: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Press start to begin";
         speechSynthesis.speak(msg);
@@ -319,7 +319,7 @@ const audio = {
     askPlayerCount: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Red for 2 players. Yellow for 3 players. Blue for 4 players.";
         speechSynthesis.speak(msg);
@@ -327,7 +327,7 @@ const audio = {
     youAreEliminated: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "You are eliminated";
         speechSynthesis.speak(msg);
@@ -338,7 +338,7 @@ const audio = {
     allPlayers: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "All players who can";
         speechSynthesis.speak(msg);
@@ -349,7 +349,7 @@ const audio = {
     moveUp: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Move up and take over your new player number and color";
         speechSynthesis.speak(msg);
@@ -360,7 +360,7 @@ const audio = {
     roundStarting: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = "Next round starting";
         speechSynthesis.speak(msg);
@@ -368,7 +368,7 @@ const audio = {
     annouceWinner: function(player) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = `Player ${player} has won team elimination`;
         speechSynthesis.speak(msg);
@@ -376,7 +376,7 @@ const audio = {
     congratulate: function(gameLevel, skillLevel) {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = `Congratulations for beating Simon on game level ${gameLevel} and skill level ${skillLevel}`;
         speechSynthesis.speak(msg);
@@ -384,7 +384,7 @@ const audio = {
     secondaryCongratulate: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
-        msg.rate = 1.5;
+        msg.rate = 1;
         msg.pitch = 0;
         msg.text = `Congratulations for reecreating the sequence`;
         speechSynthesis.speak(msg);
