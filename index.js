@@ -161,21 +161,25 @@ const view = {
             setTimeout(() => {
                 if (button === 1) {
                     $("#green").removeClass("button").addClass("active-button");
+                    audio.playButtonSound(button);
                     setTimeout(() => {
                         $("#green").removeClass("active-button").addClass("button");
                     }, delay)
                 } else if (button === 2) {
                     $("#red").removeClass("button").addClass("active-button");
+                    audio.playButtonSound(button);
                     setTimeout(() => {
                         $("#red").removeClass("active-button").addClass("button");
                     }, delay)
                 } else if (button === 3) {
                     $("#yellow").removeClass("button").addClass("active-button");
+                    audio.playButtonSound(button);
                     setTimeout(() => {
                         $("#yellow").removeClass("active-button").addClass("button");
                     }, delay)
                 } else if (button === 4) {
                     $("#blue").removeClass("button").addClass("active-button");
+                    audio.playButtonSound(button);
                     setTimeout(() => {
                         $("#blue").removeClass("active-button").addClass("button");
                     }, delay)
@@ -199,45 +203,25 @@ const view = {
     congratulate: function() {
         for (let i = 0; i < 3; i++) {
             setTimeout(() => {
-                $("#green").removeClass("button").addClass("active-button");
                 setTimeout(() => {
-                    $("#green").removeClass("active-button").addClass("button");
-                }, 500)
-                $("#red").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#red").removeClass("active-button").addClass("button");
-                }, 500)
-                $("#yellow").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#yellow").removeClass("active-button").addClass("button");
-                }, 500)
-                $("#blue").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#blue").removeClass("active-button").addClass("button");
-                }, 500)   
-            }, i * 1200)
-        }
-    },
-    secondaryCongratulate: function() {
-        for (let i = 0; i < 3; i++) {
-            setTimeout(() => {
-                $("#green").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#green").removeClass("active-button").addClass("button");
-                }, 500)
-                $("#red").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#red").removeClass("active-button").addClass("button");
-                }, 500)
-                $("#yellow").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#yellow").removeClass("active-button").addClass("button");
-                }, 500)
-                $("#blue").removeClass("button").addClass("active-button");
-                setTimeout(() => {
-                    $("#blue").removeClass("active-button").addClass("button");
-                }, 500)   
-            }, i * 1200)
+                    $("#green").removeClass("button").addClass("active-button");
+                    setTimeout(() => {
+                        $("#green").removeClass("active-button").addClass("button");
+                    }, 500)
+                    $("#red").removeClass("button").addClass("active-button");
+                    setTimeout(() => {
+                        $("#red").removeClass("active-button").addClass("button");
+                    }, 500)
+                    $("#yellow").removeClass("button").addClass("active-button");
+                    setTimeout(() => {
+                        $("#yellow").removeClass("active-button").addClass("button");
+                    }, 500)
+                    $("#blue").removeClass("button").addClass("active-button");
+                    setTimeout(() => {
+                        $("#blue").removeClass("active-button").addClass("button");
+                    }, 500)   
+                }, i * 1200);
+            }, 1500);
         }
     }
 }
@@ -324,7 +308,7 @@ const audio = {
         msg.text = `Push ${skillLevel * 10} buttons to create your sequence`;
         speechSynthesis.speak(msg);
     },
-    otherPlayerPressStart: function() {
+    createPlayStart: function() {
         var msg = new SpeechSynthesisUtterance();
         msg.volume = 1;
         msg.rate = 1.5;
@@ -402,12 +386,24 @@ const audio = {
         msg.volume = 1;
         msg.rate = 1.5;
         msg.pitch = 0;
-        msg.text = `Congratulations for recreating the sequence`;
+        msg.text = `Congratulations for reecreating the sequence`;
         speechSynthesis.speak(msg);
     },
-    playButtonSound: function(button, skillLevel) {
-        console.log("Playing button sound..")
-    },
+    greenButton: new Audio("assets/button-sounds/green-button-18db.mp3"),
+    redButton: new Audio("assets/button-sounds/red-button-18db.mp3"),
+    yellowButton: new Audio("assets/button-sounds/yellow-button-18db.mp3"),
+    blueButton: new Audio("assets/button-sounds/blue-button-18db.mp3"),
+    playButtonSound: function(button) {
+        if (button === 1) {
+            this.greenButton.play();
+        } else if (button === 2) {
+            this.redButton.play();
+        } else if (button === 3) {
+            this.yellowButton.play();
+        } else {
+            this.blueButton.play();
+        }
+    }
 }
 
 // Model
@@ -419,7 +415,6 @@ const model = {
         } else if (direction === "down" && this.gameType > 1) {
             this.gameType = this.gameType - 1;
         }
-        console.log(this.gameType)
     },
     skillLevel: 1,
     setSkillLevel: function(direction) {
@@ -428,7 +423,6 @@ const model = {
         } else if (direction === "down" && this.skillLevel > 1) {
             this.skillLevel = this.skillLevel - 1;
         }
-        console.log(this.skillLevel)
     },
     currentLastScore: 0,
     lastScore: this.currentLastScore ? this.currentLastScore : localStorage.getItem("lastScore") ? localStorage.getItem("lastScore") : 0,
@@ -469,7 +463,6 @@ const model = {
         } else {
             this.powerStatus = "On";
         }
-        console.log(this.powerStatus)
     },
     onAndIdle: false,
     scoreCheckAvailable: function() {
@@ -509,7 +502,7 @@ const model = {
                     for (let i = 0; i < this.currentSequence.length; i++) {
                         setTimeout(() => {
                             view.lightUpButton(this.currentSequence[i], skillLevel);
-                            audio.playButtonSound(this.currentSequence[i], skillLevel);
+                            // audio.playButtonSound(this.currentSequence[i]);
                             if (i === (this.currentSequence.length - 1)) {
                                 setTimeout(() => {
                                     this.toggleButtons();
@@ -532,7 +525,7 @@ const model = {
                 for (let i = 0; i < this.currentSequence.length; i++) {
                     setTimeout(() => {
                         view.lightUpButton(this.currentSequence[i], skillLevel);
-                        audio.playButtonSound(this.currentSequence[i], skillLevel);
+                        // audio.playButtonSound(this.currentSequence[i]);
                         if (i === (this.currentSequence.length - 1)) {
                             setTimeout(() => {
                                 this.toggleButtons();
@@ -544,12 +537,11 @@ const model = {
         } 
     },
     playPlayerSequence: function(skillLevel) {
-        console.log(this.playerArray.length)
         setTimeout(() => {
             for (let i = 0; i < this.playerArray.length; i++) {
                 setTimeout(() => {
                     view.lightUpButton(this.playerArray[i], skillLevel);
-                    audio.playButtonSound(this.playerArray[i], skillLevel);
+                    // audio.playButtonSound(this.playerArray[i]);
                     if (i === (this.playerArray.length - 1)) {
                         setTimeout(() => {
                             this.toggleButtons();
@@ -572,26 +564,26 @@ const model = {
     buttonPresses: 0,
     buttonPress: function(color) {
         if (this.enterPlayerArray) {
+            audio.playButtonSound(this.buttonMap[color]);
             if (this.playerArray.length === (this.skillLevel * 10) - 1) {
                 this.playerArray.push(this.buttonMap[color])
-                console.log(this.playerArray)
                 this.enterPlayerArray = false;
-                this.playerArrayCount = this.playerArrayCount + 1;
-                audio.otherPlayerPressStart();
+                audio.createPlayStart();
                 setTimeout(() => {
                     this.gameTwoStart = true;
                 }, 1000)
             } else {
                 this.playerArray.push(this.buttonMap[color])
-                console.log(this.playerArray)
             }
         } else if (this.waitingPlayerCount) {
+            audio.playButtonSound(this.buttonMap[color]);
             if (this.buttonMap[color] > 1) {
                 this.playerCount = this.buttonMap[color];
                 this.waitingPlayerCount = false;
                 game.buildTeamGame(this.playerCount, this.skillLevel);
             }
         } else if (this.buttonsActive) {
+            audio.playButtonSound(this.buttonMap[color]);
             if (this.buttonMap[color] === this.playerArray[this.buttonPresses]) {
                 this.buttonPresses = this.buttonPresses + 1;
             } else if (this.buttonMap[color] === this.currentSequence[this.buttonPresses]) {
@@ -615,27 +607,23 @@ const model = {
                     view.congratulate();
                     audio.congratulate();
                     this.endGame();
-                }
+                } else if (this.buttonPresses === this.currentSequence.length) {
+                    this.buttonPresses = 0;
+                    this.currentSequence = this.fullSequence.slice(0, (this.currentSequence.length + 1));
+                    this.toggleButtons();
+                    this.activeGame = false;
+                    this.playSequence(this.skillLevel);
+                } 
             } else {
                 if (this.buttonPresses === this.playerArray.length) {
-                    view.secondaryCongratulate();
+                    view.congratulate();
                     audio.secondaryCongratulate();
                     this.endGame();
                 }
             }
-            
-            
-            if (this.buttonPresses === this.currentSequence.length) {
-                this.buttonPresses = 0;
-                this.currentSequence = this.fullSequence.slice(0, (this.currentSequence.length + 1));
-                this.toggleButtons();
-                this.activeGame = false;
-                this.playSequence(this.skillLevel);
-            } 
         } 
     },
     enterPlayerArray: false,
-    playerArrayCount: 0,
     playerArray: [],
     gameTwoStart: false,
     playerCount: 0,
@@ -683,6 +671,10 @@ const model = {
                 this.currentLongestScore = finalScore;
                 localStorage.setItem("longestScore", `${finalScore}`); 
             }   
+        }
+        if (this.gameTwoStart) {
+            this.gameTwoStart = false;
+            this.playerArray = [];
         }
         if (this.playerCount) {
             this.playerCount = 0;
