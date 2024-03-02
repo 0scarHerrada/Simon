@@ -70,13 +70,11 @@ main {
     z-index: 2;
     height: 100%;
     width: 100%;
-    outline: 2px solid #444;
-    border: 2px solid #333;
+    border: 1px solid #333;
     
 }
 
 .button:active {
-    outline: 2px solid #333;
     border: 2px solid #222;
     background-image: url(./assets/lit_grain_nobg.png);
     background-position: center;
@@ -85,14 +83,12 @@ main {
 .active-button {
     height: 100%;
     width: 100%;
-    outline: 3px solid #333;
-    border: 3px solid #222;
+    border: 5px solid #222;
     background-image: url(./assets/lit_grain_nobg.png);
     background-position: center;
 }
 
 .small-button-click {
-    outline: 2px solid #333;
     border: 2px solid #222;
 }
 
@@ -366,7 +362,6 @@ main {
     height: 30px;
     width: 30px;
     margin-top: 10px;
-    border: 6px solid #1e2225;
     border-radius: 50%;
     justify-self: center;
     align-self: flex-start;
@@ -374,6 +369,7 @@ main {
 
 .yellow {
     background-color: #d1ba25;
+    outline: 6px solid #1e2225;
     border: 3px solid #b19d20;
 }
 
@@ -383,6 +379,7 @@ main {
 
 .red {
     background-color: #df4847;
+    outline: 6px solid #1e2225;
     border: 3px solid #b33838;
 }
 
