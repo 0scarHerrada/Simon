@@ -98,22 +98,22 @@ main {
 
 #green {
     border-radius: 150% 4% 95% 4%;
-    background-color: transparent;
+    background-color: #00000002;
 }
 
 #red {
     border-radius: 4% 150% 4% 95%;
-    background-color: transparent;
+    background-color: #00000002;
 }
 
 #yellow {
     border-radius: 4% 95% 4% 150%;
-    background-color: transparent;
+    background-color: #00000002;
 }
 
 #blue {
     border-radius: 95% 4% 150% 4%;
-    background-color: transparent;
+    background-color: #00000002;
 }
 
 /* Flat Buttons */
@@ -122,7 +122,7 @@ main {
     position: relative;
     height: 40%;
     width: 40%;
-    background-color: transparent;
+    background-color: #00000002;
 }
 
 #flat-green {
@@ -366,7 +366,7 @@ main {
     height: 30px;
     width: 30px;
     margin-top: 10px;
-    outline: 6px solid #1e2225;
+    border: 6px solid #1e2225;
     border-radius: 50%;
     justify-self: center;
     align-self: flex-start;
