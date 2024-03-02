@@ -10,12 +10,15 @@ html {
 }
 
 body {
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    background-color: #111;
 }
 
 main {
-    height: 100vh;
-    background-color: #111;
+    height: 100%;
+    width: 100%;
     /* background-color: #fafafa; */
     display: grid;
 }
