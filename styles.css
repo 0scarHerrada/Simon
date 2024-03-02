@@ -20,16 +20,15 @@ main {
     height: 100%;
     width: 100%;
     /* background-color: #fafafa; */
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Main */
 #simon-game {
-    position: absolute;
     height: 800px;
     width: 800px;
-    justify-self: center;
-    align-self: center;
     border: 5px solid #222;
     border-radius: 48.5%;
     display: grid;
