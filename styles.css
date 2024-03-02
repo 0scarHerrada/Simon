@@ -81,7 +81,8 @@ main {
 }
 
 .button:active {
-    border: 2px solid #222;
+    border: 5px solid #222;
+    box-shadow: 0 0 2px black;
     background-image: url(./assets/lit_grain_nobg.png);
     background-position: center;
 }
@@ -90,6 +91,7 @@ main {
     height: 100%;
     width: 100%;
     border: 5px solid #222;
+    box-shadow: 0 0 2px black;
     background-image: url(./assets/lit_grain_nobg.png);
     background-position: center;
 }
@@ -375,7 +377,7 @@ main {
 }
 
 .yellow:active {
-    border: 1px solid #1e2225;
+    border: 7px solid #1e2225;
 }
 
 .red {
@@ -383,7 +385,7 @@ main {
 }
 
 .red:active {
-    border: 1px solid #1e2225;
+    border: 7px solid #1e2225;
 }
 
 /* On Off Settings */

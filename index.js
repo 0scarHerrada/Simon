@@ -79,6 +79,7 @@ const controller = {
     powerOn: function() {
         model.setPowerStatus("On");
         view.shiftPower("On");
+        audio.firstSound();
         audio.poweringOn();
     }
 }
@@ -389,10 +390,32 @@ const audio = {
         msg.text = `Congratulations for reecreating the sequence`;
         speechSynthesis.speak(msg);
     },
-    greenButton: new Audio("assets/button-sounds/green-button-18db.mp3"),
-    redButton: new Audio("assets/button-sounds/red-button-18db.mp3"),
-    yellowButton: new Audio("assets/button-sounds/yellow-button-18db.mp3"),
-    blueButton: new Audio("assets/button-sounds/blue-button-18db.mp3"),
+    initSounds: function() {
+        this.greenButton = new Audio("assets/button-sounds/green-button-18db.mp3");
+        this.redButton = new Audio("assets/button-sounds/red-button-18db.mp3");
+        this.yellowButton = new Audio("assets/button-sounds/yellow-button-18db.mp3");
+        this.blueButton = new Audio("assets/button-sounds/blue-button-18db.mp3");
+    },
+    firstSound: function() {
+        this.greenButton.volume = 0;
+        this.redButton.volume = 0;
+        this.yellowButton.volume = 0;
+        this.blueButton.volume = 0;
+        this.greenButton.play();
+        this.redButton.play();
+        this.yellowButton.play();
+        this.blueButton.play();
+        setTimeout(() => {
+            this.greenButton.volume = 1;
+            this.redButton.volume = 1;
+            this.yellowButton.volume = 1;
+            this.blueButton.volume = 1;
+        }, 1000);
+    },
+    greenButton: {},
+    redButton: {},
+    yellowButton: {},
+    blueButton: {},
     playButtonSound: function(button) {
         if (button === 1) {
             this.greenButton.play();
@@ -429,6 +452,7 @@ const model = {
     activeGame: false,
     startGame: function() {
         if (this.powerStatus === "On" && !this.activeGame) {
+            this.activeGame = true;
             this.onAndIdle = false;
             if (this.gameType === 1) {
                 audio.startingGame("Solo vs. Simon");
@@ -476,6 +500,7 @@ const model = {
         this.playSequence(skillLevel);
     },
     playPVPGame: function(skillLevel) {
+        this.activeGame = true;
         audio.getPlayerArray(this.skillLevel);
         this.enterPlayerArray = true;
         setTimeout(() => {
@@ -506,7 +531,6 @@ const model = {
                             if (i === (this.currentSequence.length - 1)) {
                                 setTimeout(() => {
                                     this.toggleButtons();
-                                    this.activeGame = true;
                                 }, 1000);
                             }
                         }, i * 1000);
@@ -522,6 +546,7 @@ const model = {
                         return;
                     }
                 }, (this.currentSequence.length * (3000 - (skillLevel * 500))) + 7000);    
+                setTimeout(() => {
                 for (let i = 0; i < this.currentSequence.length; i++) {
                     setTimeout(() => {
                         view.lightUpButton(this.currentSequence[i], skillLevel);
@@ -529,11 +554,11 @@ const model = {
                         if (i === (this.currentSequence.length - 1)) {
                             setTimeout(() => {
                                 this.toggleButtons();
-                                this.activeGame = true;
                             }, 1000);
                         }
                     }, i * ((1000 / skillLevel) + 100));
                 }
+            }, 1000)
         } 
     },
     playPlayerSequence: function(skillLevel) {
@@ -545,7 +570,6 @@ const model = {
                     if (i === (this.playerArray.length - 1)) {
                         setTimeout(() => {
                             this.toggleButtons();
-                            this.activeGame = true;
                         }, 1000);
                     }
                 },  i * ((1000 / skillLevel) + 100));
