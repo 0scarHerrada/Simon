@@ -224,6 +224,36 @@ const view = {
                 }, i * 1200);
             }, 1500);
         }
+    },
+    initTouches: function() {
+        $("#green").on("touchstart", () => {
+            $("#green").removeClass("button").addClass("active-button");
+            audio.playButtonSound(button);
+            setTimeout(() => {
+                $("#green").removeClass("active-button").addClass("button");
+            }, 400)
+        })
+        $("#red").on("touchstart", () => {
+            $("#red").removeClass("button").addClass("active-button");
+            audio.playButtonSound(button);
+            setTimeout(() => {
+                $("#red").removeClass("active-button").addClass("button");
+            }, 400)
+        })
+        $("#yellow").on("touchstart", () => {
+            $("#yellow").removeClass("button").addClass("active-button");
+            audio.playButtonSound(button);
+            setTimeout(() => {
+                $("#yellow").removeClass("active-button").addClass("button");
+            }, 400)
+        })
+        $("#blue").on("touchstart", () => {
+            $("#blue").removeClass("button").addClass("active-button");
+            audio.playButtonSound(button);
+            setTimeout(() => {
+                $("#blue").removeClass("active-button").addClass("button");
+            }, 400)
+        })
     }
 }
 
@@ -391,16 +421,16 @@ const audio = {
         speechSynthesis.speak(msg);
     },
     initSounds: function() {
-        this.greenButton = new Audio("assets/button-sounds/green-button-18db.mp3");
-        this.redButton = new Audio("assets/button-sounds/red-button-18db.mp3");
-        this.yellowButton = new Audio("assets/button-sounds/yellow-button-18db.mp3");
-        this.blueButton = new Audio("assets/button-sounds/blue-button-18db.mp3");
+        this.greenButton = new Audio("assets/button-sounds/green-button-128kb.mp3");
+        this.redButton = new Audio("assets/button-sounds/red-button-128kb.mp3");
+        this.yellowButton = new Audio("assets/button-sounds/yellow-button-128kb.mp3");
+        this.blueButton = new Audio("assets/button-sounds/blue-button-128kb.mp3");
     },
     firstSound: function() {
-        this.greenButton.volume = 0;
-        this.redButton.volume = 0;
-        this.yellowButton.volume = 0;
-        this.blueButton.volume = 0;
+        this.greenButton.volume = 0.1;
+        this.redButton.volume = 0.1;
+        this.yellowButton.volume = 0.1;
+        this.blueButton.volume = 0.1;
         this.greenButton.play();
         this.redButton.play();
         this.yellowButton.play();
@@ -710,6 +740,10 @@ const model = {
         setTimeout(() => {
             this.activeGame = false;
         }, 4500)
+    },
+    initGame: function() {
+        view.initTouches();
+        audio.initSounds();
     }
 }
 
