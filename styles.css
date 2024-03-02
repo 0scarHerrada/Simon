@@ -9,9 +9,12 @@ html {
     font-size: 12px;
 }
 
+body {
+    overflow: hidden;
+}
+
 main {
     height: 100vh;
-    overflow: hidden;
     background-color: #111;
     /* background-color: #fafafa; */
     display: grid;
@@ -19,6 +22,7 @@ main {
 
 /* Main */
 #simon-game {
+    position: absolute;
     height: 800px;
     width: 800px;
     justify-self: center;
@@ -124,7 +128,6 @@ main {
 #flat-green {
     bottom: 65%;
     left: 35%;
-    outline: 1px solid #01c983;
     border: 10px solid #00a169;
     border-radius: 90% 10% 5% 10%;
 }
@@ -132,7 +135,6 @@ main {
 #flat-red {
     bottom: 65%;
     left: 25%;
-    outline: 1px solid #df4847;
     border: 10px solid #b33838;
     border-radius: 10% 90% 10% 5%;
 }
@@ -140,7 +142,6 @@ main {
 #flat-yellow {
     bottom: 77%;
     left: 35%;
-    outline: 1px solid #e4cb29;
     border: 10px solid #b19d20;
     border-radius: 10% 5% 10% 90%;
 }
@@ -148,7 +149,6 @@ main {
 #flat-blue {
     bottom: 77%;
     left: 25%;
-    outline: 1px solid #0285c1;
     border: 10px solid #0175ac;
     border-radius: 5% 10% 90% 10%;
 }
@@ -359,18 +359,17 @@ main {
 }
 
 .game-button {
-    height: 30px;
-    width: 30px;
-    margin-top: 10px;
+    height: 40px;
+    width: 40px;
+    margin-top: 2px;
     border-radius: 50%;
+    border: 6px solid #1e2225;
     justify-self: center;
     align-self: flex-start;
 }
 
 .yellow {
     background-color: #d1ba25;
-    outline: 6px solid #1e2225;
-    border: 3px solid #b19d20;
 }
 
 .yellow:active {
@@ -379,8 +378,6 @@ main {
 
 .red {
     background-color: #df4847;
-    outline: 6px solid #1e2225;
-    border: 3px solid #b33838;
 }
 
 .red:active {
