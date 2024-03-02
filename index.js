@@ -228,28 +228,28 @@ const view = {
     initTouches: function() {
         $("#green").on("touchstart", () => {
             $("#green").removeClass("button").addClass("active-button");
-            audio.playButtonSound(button);
+            audio.playButtonSound(1);
             setTimeout(() => {
                 $("#green").removeClass("active-button").addClass("button");
             }, 400)
         })
         $("#red").on("touchstart", () => {
             $("#red").removeClass("button").addClass("active-button");
-            audio.playButtonSound(button);
+            audio.playButtonSound(2);
             setTimeout(() => {
                 $("#red").removeClass("active-button").addClass("button");
             }, 400)
         })
         $("#yellow").on("touchstart", () => {
             $("#yellow").removeClass("button").addClass("active-button");
-            audio.playButtonSound(button);
+            audio.playButtonSound(3);
             setTimeout(() => {
                 $("#yellow").removeClass("active-button").addClass("button");
             }, 400)
         })
         $("#blue").on("touchstart", () => {
             $("#blue").removeClass("button").addClass("active-button");
-            audio.playButtonSound(button);
+            audio.playButtonSound(4);
             setTimeout(() => {
                 $("#blue").removeClass("active-button").addClass("button");
             }, 400)
