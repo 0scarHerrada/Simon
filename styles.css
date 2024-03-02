@@ -9,7 +9,7 @@ html {
     font-size: 12px;
 }
 
-body{
+main {
     height: 100vh;
     overflow: hidden;
     background-color: #111;
