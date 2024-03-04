@@ -173,6 +173,10 @@ main {
     background-position: center;
 }
 
+#mobile-centerpiece {
+    display: none;
+}
+
 /* Brand and Logo */
 #name-logo-container {
     position: relative;
@@ -204,6 +208,10 @@ main {
 #name-img-container img {
     margin-top: 10px;
     width: 100%;
+}
+
+#pocket-simon {
+    display: none;
 }
 
 .tm {
@@ -281,6 +289,14 @@ main {
     gap: 12px;
 }
 
+#mobile-short-values {
+    display: none;
+}
+
+#mobile-long-values {
+    display: none;
+}
+
 .switch-detail {
     font-weight: 700;
 }
@@ -352,6 +368,11 @@ main {
     left: 39px;
 }
 
+/* Mobile Switch */
+.mobile-switch-container {
+    display: none;
+}
+
 /* Game Buttons */
 #game-buttons {
     height: 25%;
@@ -411,4 +432,316 @@ main {
 
 #off {
     right: 9px;
+}
+
+
+
+
+
+/* Media Queries */
+@media (max-width: 810px) or (orientation: portrait) {
+    /* Main */
+    main {
+        height: 100%;
+        width: 100%;
+        /* background-color: #fafafa; */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #simon-game {
+        z-index: 10;
+        position: relative;
+        height: 375px;
+        width: 375px;
+        min-height: 350px;
+        min-width: 350px;
+        border-color: #1a1c1f;
+        border-radius: 49.5%;
+        padding: 23px;
+        margin-bottom: -155px;
+        gap: 25px;
+    }
+    #mobile-centerpiece {
+        display: inline;
+        z-index: 11;
+        position: absolute;
+        top: 32.5%;
+        left: 32.5%;
+        height: 120px;
+        width: 120px;
+        rotate: 4.5deg;
+        border: 8px solid #1e2225;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #c2c2c2;
+    }
+    #logo-ring {
+        height: 90px;
+        width: 90px;
+        border: 2px solid #1a1c1f;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #mobile-logo {
+        width: 58%;
+        border-radius: 7%
+    }
+    #reg-trdmk {
+        position: absolute;
+        top: 70%;
+        left: 74%;
+        font-size: 0.6rem;
+    }
+
+    /* Quadrant Borders */
+    #top-left {
+        border-radius: 150% 4% 15% 4%;
+    }
+    #top-right {
+        border-radius: 4% 150% 4% 15%;
+    }
+    #bottom-left {
+        border-radius: 4% 15% 4% 150%;
+    }
+    #bottom-right {
+        border-radius: 15% 4% 150% 4%;
+    }
+
+    /* Buttons */
+    #green {
+        border-radius: 150% 4% 15% 4%;
+    }
+    #red {
+        border-radius: 4% 150% 4% 15%;
+    }
+    #yellow {
+        border-radius: 4% 15% 4% 150%;
+    }
+    #blue {
+        border-radius: 15% 4% 150% 4%;
+    }
+
+    /* Flat Buttons */
+    .flat-button {
+        display: none;
+    }
+
+    /* Game Center */ 
+    #gamecenter {
+        z-index: 5;
+        position: relative;
+        justify-self: auto;
+        align-self: auto;
+        height: 420px;
+        width: 325px;
+        min-height: 420px;
+        min-width: 325px;
+        border: 1px solid #1a1c1f;
+        border-bottom: 30px solid #1a1c1f;
+        border-radius: 4% / 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        padding-top: 110px;
+        background-color: #1a1c1f;
+        background-image: url(./assets/cc-lg.svg);
+        background-size: 165%;
+        background-position: 51% 65%;
+    }
+
+    /* Brand and Logo */
+    #name-logo-container {
+        order: 3;
+        position: relative;
+        bottom: 0;
+        width: 70%;
+        align-self: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    #name-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+    }
+    #logo-container {
+        height: 5px;
+        margin-bottom: 0;
+    }
+    #name-img-container img {
+        width: 75%;
+    }
+    #regular-simon {
+        display: none;
+    }
+    #pocket-simon {
+        display: inline;
+        position: relative;
+        top: -12px;
+        left: 35px;
+        rotate: -0.5deg;
+    }
+    #logo {
+        display: none;
+    }
+    .tm {
+        position: absolute;
+        color: #c2c2c2;
+        font-size: 0.5rem;
+    }
+    #logo-tm {
+        display: none;
+    }
+    #simon-tm {
+        display: none;
+    }
+
+    /* Control Board */
+    #game-controls {
+        order: 1;
+        position: relative;
+        bottom: 0;
+        height: 42%;
+        align-self: auto;
+        padding-top: 30px;
+        gap: 12px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: -0.05rem;;
+    }
+    #game-switches {
+        order: 2;
+        height: 50%;
+        width: 95%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: 3px;
+        margin-bottom: 10px;
+    }
+    #game-style-container {
+        height: 50px;
+        width: 40%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 0;
+    }
+    #skill-level-container {
+        height: 50px;
+        width: 40%;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 0;
+    }
+    .switch-values {
+        display: flex;
+        justify-content: center;
+        font-family: sans-serif;
+        font-size: 0.95rem;
+    }
+    .skill-values {
+        margin-right: 0;
+    }
+    .short-switch-container {
+        display: none;
+    }
+    .long-switch-container {
+        display: none;
+    }
+    #short-values {
+        display: none;
+    }
+    #long-values {
+        display: none;
+    }
+    .switch-detail {
+        background-color: #aba9a9;
+        border: 1px solid #d7d7d7;
+        font-size: 0.9rem;
+        min-height: 20px;
+        min-width: 20px;
+    }
+    .switch-detail:active {
+        background-color: #918e8e;
+        border: none;
+    }
+
+    /* Mobile Switch */
+    .mobile-switch-container {
+        display: flex;
+        min-height: 18px;
+        width: 70px;
+        margin-bottom: 2px;
+        border: 2px solid #0c0d0f;
+        background-color: #202528;
+        
+    }
+    .mobile-switch {
+        height: 16px;
+        width: 22px;
+    }
+    .mobile-switch img {
+        width: 100%;
+    }
+    #mobile-short-values {
+        display: flex;
+    }
+    #mobile-long-values {
+        display: flex;
+    }
+
+    /* Game Buttons */
+    #game-buttons {
+        order: 1;
+        height: 50%;
+        width: 75%;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-bottom: -13px;
+        text-align: center;
+    }
+    .button-detail {
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: -0.05rem;
+    }
+    .game-button {
+        order: -1;
+        height: 20px;
+        width: 20px;
+        margin-bottom: 2px;
+        border: 1px solid #7d8992;
+    }
+    .game-button:active {
+        height: 19px;
+        width: 19px;
+        border: 2px solid #7d8992;
+    }
+    .yellow {
+        background-color: #0285c1;
+    }
+    .red {
+        background-color: #df4847;
+    }
+    
+    /* On - Off */
+    #on-off {
+        display: none;
+    }
 }

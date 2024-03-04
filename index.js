@@ -3,31 +3,15 @@ const controller = {
     pushGreen: function() {
         model.buttonPress("green");
     },
-    smallGreen: function() {
-        this.pushGreen();
-        view.displaySmallPush("green");
-    },
     pushRed: function() {
         model.buttonPress("red");
-    },
-    smallRed: function() {
-        this.pushRed();
-        view.displaySmallPush("red");
     },
     pushYellow: function() {
         model.buttonPress("yellow");
         view.pressYellow();
     },
-    smallYellow: function() {
-        this.pushYellow();
-        view.displaySmallPush("yellow");  
-    },
     pushBlue: function() {
         model.buttonPress("blue");
-    },
-    smallBlue: function() {
-        this.pushBlue();
-        view.displaySmallPush("blue");
     },
     gameTypeUp: function() {
         model.setGameType("up");
@@ -86,29 +70,6 @@ const controller = {
 
 // View
 const view = {
-    displaySmallPush: function(color) {
-        if (color === "green") {
-            $("#green").addClass("small-button-click");
-            setTimeout(() => {
-                $("#green").removeClass("small-button-click");
-            }, 100)
-        } else if (color === "red") {
-            $("#red").addClass("small-button-click");
-            setTimeout(() => {
-            $("#red").removeClass("small-button-click");
-            }, 100)
-        } else if (color === "yellow") {
-            $("#yellow").addClass("small-button-click");
-            setTimeout(() => {
-            $("#yellow").removeClass("small-button-click");
-            }, 100)
-        } else {
-            $("#blue").addClass("small-button-click");
-            setTimeout(() => {
-            $("#blue").removeClass("small-button-click");
-            }, 100) 
-        }
-    },
     pressYellow: function() {
         $("#bottom-left").css("background-color", "#e0c828");
         setTimeout(() => {
@@ -157,7 +118,7 @@ const view = {
         }
     },
     lightUpButton: function(button, skillLevel) {
-            let adjustment = (skillLevel * 100) - 100;
+            let adjustment = (skillLevel * 100) - 50;
             let delay = 500 - adjustment;
             setTimeout(() => {
                 if (button === 1) {

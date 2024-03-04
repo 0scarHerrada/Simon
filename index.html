@@ -14,19 +14,25 @@
             <section id="simon-game">
                 <div id="top-left" class="button-container">
                     <button id="green" class="button" onclick="controller.pushGreen()"></button>
-                    <button id="flat-green" class="flat-button" onclick="controller.smallGreen()"></button>
+                    <button id="flat-green" class="flat-button" ></button>
                 </div>
                 <div id="top-right" class="button-container">
                     <button id="red" class="button" onclick="controller.pushRed()"></button>
-                    <button id="flat-red" class="flat-button" onclick="controller.smallRed()"></button>
+                    <button id="flat-red" class="flat-button"></button>
+                </div>
+                <div id="mobile-centerpiece">
+                    <div id="logo-ring">
+                        <img id="mobile-logo" src="./assets/mobile-logo-nobg.png" alt="">
+                        <p id="reg-trdmk">®</p>
+                    </div>
                 </div>
                 <div id="bottom-left">
                     <button id="yellow" class="button" onclick="controller.pushYellow()"></button>
-                    <button id="flat-yellow" class="flat-button" onclick="controller.smallYellow()"></button>
+                    <button id="flat-yellow" class="flat-button"></button>
                 </div>
                 <div id="bottom-right">
                     <button id="blue" class="button" onclick="controller.pushBlue()"></button>
-                    <button id="flat-blue" class="flat-button" onclick="controller.smallBlue()"></button>
+                    <button id="flat-blue" class="flat-button"></button>
                 </div>
             </section>
             <div id="gamecenter">
@@ -37,7 +43,8 @@
                     </div>
                     <div id="name-container">
                         <div id="name-img-container">
-                            <img src="./assets/simon_name.png" alt="">
+                            <img id="regular-simon" src="./assets/simon_name.png" alt="">
+                            <img id="pocket-simon" src="./assets/pocket-simon.png" alt="">
                         </div>
                         <p id="simon-tm" class="tm">TM</p>
                     </div>
@@ -46,6 +53,17 @@
                     <section id="game-switches">
                         <div id="game-style-container">
                             <p>GAME</p>
+                            <div class="mobile-switch-container">
+                                <div id="mobile-game-switch1" class="switch mobile-switch">
+                                    <img src="./assets/mobile-switch-upscaled.png" alt="">
+                                </div>
+                            </div>
+                            <div id="mobile-short-values"class="switch-values">
+                                <button class="switch-detail">OFF</button>
+                                <button class="switch-detail">1</button>
+                                <button class="switch-detail">2</button>
+                                <button class="switch-detail">3</button>
+                            </div>
                             <div id="short-values"class="switch-values">
                                 <p class="switch-detail">1</p>
                                 <p class="switch-detail">2</p>
@@ -54,6 +72,17 @@
                         </div>
                         <div id="skill-level-container">
                             <p>SKILL LEVEL</p>
+                            <div class="mobile-switch-container">
+                                <div id="mobile-skill-switch1" class="switch mobile-switch">
+                                    <img src="./assets/mobile-switch-upscaled.png" alt="">
+                                </div>
+                            </div>
+                            <div id="mobile-long-values" class="switch-values skill-values">
+                                <button class="switch-detail">1</button>
+                                <button class="switch-detail">2</button>
+                                <button class="switch-detail">3</button>
+                                <button class="switch-detail">4</button>
+                            </div>
                             <div id="long-values" class="switch-values skill-values">
                                 <p class="switch-detail">1</p>
                                 <p class="switch-detail">2</p>
