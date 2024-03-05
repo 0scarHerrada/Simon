@@ -25,6 +25,10 @@ main {
     align-items: center;
 }
 
+button {
+    color: #1a1c1f;
+}
+
 /* Main */
 #simon-game {
     height: 800px;
@@ -439,7 +443,7 @@ main {
 
 
 /* Media Queries */
-@media (max-width: 810px) or (orientation: portrait) {
+@media (orientation: portrait), (max-width: 810px), (max-height: 810px) {
     /* Main */
     main {
         height: 100%;
@@ -704,6 +708,34 @@ main {
     }
     #mobile-long-values {
         display: flex;
+    }
+
+    /* Mobile Game Switch */
+    #mobile-game-switch1 {
+        margin-left: 0;
+    }
+    #mobile-game-switch2 {
+        margin-left: 13px;
+    }
+    #mobile-game-switch3 {
+        margin-left: 32px;
+    }
+    #mobile-game-switch4 {
+        margin-left: 46px;
+    }
+
+    /* Mobile Skill Switch */
+    #mobile-skill-switch1 {
+        margin-left: 0;
+    }
+    #mobile-skill-switch2 {
+        margin-left: 13px;
+    }
+    #mobile-skill-switch3 {
+        margin-left: 32px;
+    }
+    #mobile-skill-switch4 {
+        margin-left: 46px;
     }
 
     /* Game Buttons */

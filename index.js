@@ -65,6 +65,64 @@ const controller = {
         view.shiftPower("On");
         audio.firstSound();
         audio.poweringOn();
+    },
+    mobileGameSwitch: function(gameType) {
+        if (gameType === 1) {
+            if (model.powerStatus === "On") {
+                audio.poweringOff();
+                location.reload();
+            } else {
+                view.mobileGameSwitch(gameType);
+            }
+        } else if (gameType === 2) {
+            if (model.powerStatus === "On") {
+                view.mobileGameSwitch(gameType);
+                model.gameType = 1;
+            } else {
+                view.mobileGameSwitch(gameType);
+                model.gameType = 1;
+                model.setPowerStatus("On");
+                audio.firstSound();
+                audio.poweringOn();
+            }
+        } else if (gameType === 3) {
+            if (model.powerStatus === "On") {
+                view.mobileGameSwitch(gameType);
+                model.gameType = 2;
+            } else {
+                view.mobileGameSwitch(gameType);
+                model.gameType = 2;
+                model.setPowerStatus("On");
+                audio.firstSound();
+                audio.poweringOn();
+            }
+        } else {
+            if (model.powerStatus === "On") {
+                view.mobileGameSwitch(gameType);
+                model.gameType = 3;
+            } else {
+                view.mobileGameSwitch(gameType);
+                model.gameType = 3;
+                model.setPowerStatus("On");
+                audio.firstSound();
+                audio.poweringOn();
+            }
+        }
+    },
+    mobileSkillSwitch: function(skillLevel) {
+        if (skillLevel === 1) {
+            view.mobileSkillSwitch(skillLevel);
+            model.skillLevel = 1;
+        } else if (skillLevel === 2) {
+            view.mobileSkillSwitch(skillLevel);
+            model.skillLevel = 2;
+        } else if (skillLevel === 3) {
+            view.mobileSkillSwitch(skillLevel);
+            model.skillLevel = 2;
+        } else {
+            view.mobileSkillSwitch(skillLevel);
+            model.skillLevel = 3;
+        }
     }
 }
 
@@ -79,34 +137,44 @@ const view = {
     shiftGameType: function(direction) {
         if (direction === "up") {
             if ($(".short-switch-container").attr("id") === "short-switch-container1") {
-                $(".short-switch-container").attr("id", "short-switch-container2")
+                $(".short-switch-container").attr("id", "short-switch-container2");
+                $("#mobile-game-container div").attr("id", "mobile-game-switch3");
             } else if ($(".short-switch-container").attr("id") === "short-switch-container2") {
-                $(".short-switch-container").attr("id", "short-switch-container3")
+                $(".short-switch-container").attr("id", "short-switch-container3");
+                $("#mobile-game-container div").attr("id", "mobile-game-switch4");
             };
         } else {
             if ($(".short-switch-container").attr("id") === "short-switch-container3") {
-                $(".short-switch-container").attr("id", "short-switch-container2")
+                $(".short-switch-container").attr("id", "short-switch-container2");
+                $("#mobile-game-container div").attr("id", "mobile-game-switch3");
             } else if ($(".short-switch-container").attr("id") === "short-switch-container2") {
-                $(".short-switch-container").attr("id", "short-switch-container1")
+                $(".short-switch-container").attr("id", "short-switch-container1");
+                $("#mobile-game-container div").attr("id", "mobile-game-switch2");
             }
         }
     },
     shiftSkillLevel: function(direction) {
         if (direction === "up") {
             if ($(".long-switch-container").attr("id") === "long-switch-container1") {
-                $(".long-switch-container").attr("id", "long-switch-container2")
+                $(".long-switch-container").attr("id", "long-switch-container2");
+                $("#mobile-skill-container div").attr("id", "mobile-skill-switch2");
             } else if ($(".long-switch-container").attr("id") === "long-switch-container2") {
-                $(".long-switch-container").attr("id", "long-switch-container3")
+                $(".long-switch-container").attr("id", "long-switch-container3");
+                $("#mobile-skill-container div").attr("id", "mobile-skill-switch3");
             } else if ($(".long-switch-container").attr("id") === "long-switch-container3") {
-                $(".long-switch-container").attr("id", "long-switch-container4")
+                $(".long-switch-container").attr("id", "long-switch-container4");
+                $("#mobile-skill-container div").attr("id", "mobile-skill-switch4");
             }
         } else {
             if ($(".long-switch-container").attr("id") === "long-switch-container4") {
-                $(".long-switch-container").attr("id", "long-switch-container3")
+                $(".long-switch-container").attr("id", "long-switch-container3");
+                $("#mobile-skill-container div").attr("id", "mobile-skill-switch3");
             } else if ($(".long-switch-container").attr("id") === "long-switch-container3") {
-                $(".long-switch-container").attr("id", "long-switch-container2")
+                $(".long-switch-container").attr("id", "long-switch-container2");
+                $("#mobile-skill-container div").attr("id", "mobile-skill-switch2");
             } else if ($(".long-switch-container").attr("id") === "long-switch-container2") {
-                $(".long-switch-container").attr("id", "long-switch-container1")
+                $(".long-switch-container").attr("id", "long-switch-container1");
+                $("#mobile-skill-container div").attr("id", "mobile-skill-switch1");
             }
         }
     },
@@ -215,6 +283,36 @@ const view = {
                 $("#blue").removeClass("active-button").addClass("button");
             }, 400)
         })
+    },
+    mobileGameSwitch: function(gameType) {
+        if (gameType === 1) {
+            $("#mobile-game-container div").attr("id", "mobile-game-switch1");
+            $(".short-switch-container").attr("id", "short-switch-container1")
+        } else if (gameType === 2) {
+            $("#mobile-game-container div").attr("id", "mobile-game-switch2");
+            $(".short-switch-container").attr("id", "short-switch-container1")
+        } else if (gameType === 3) {
+            $("#mobile-game-container div").attr("id", "mobile-game-switch3");
+            $(".short-switch-container").attr("id", "short-switch-container2")
+        } else {
+            $("#mobile-game-container div").attr("id", "mobile-game-switch4");
+            $(".short-switch-container").attr("id", "short-switch-container3")
+        }
+    },
+    mobileSkillSwitch: function(skillLevel) {
+        if (skillLevel === 1) {
+            $("#mobile-skill-container div").attr("id", "mobile-skill-switch1");
+            $(".long-switch-container").attr("id", "long-switch-container1");
+        } else if (skillLevel === 2) {
+            $("#mobile-skill-container div").attr("id", "mobile-skill-switch2");
+            $(".long-switch-container").attr("id", "long-switch-container2");
+        } else if (skillLevel === 3) {
+            $("#mobile-skill-container div").attr("id", "mobile-skill-switch3");
+            $(".long-switch-container").attr("id", "long-switch-container3");
+        } else {
+            $("#mobile-skill-container div").attr("id", "mobile-skill-switch4");
+            $(".long-switch-container").attr("id", "long-switch-container4");
+        }
     }
 }
 
